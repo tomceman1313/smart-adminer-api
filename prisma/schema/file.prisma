@@ -1,0 +1,28 @@
+model File {
+    id          Int     @id @default(autoincrement())
+    name        String
+    extension   String
+    type        String
+    context     String
+    title       String?
+    description String?
+    image       String?
+    position    Int
+
+    tags        FileTag[]
+    articles    ArticleAttachedFile[]
+    employee    Employee?
+    pageImage   PageImage[]
+    productFile ProductFile[]
+    vacancies   Vacancy[]
+}
+
+model FileTag {
+    id       Int @id @default(autoincrement())
+    fileId   Int
+    tagId    Int
+    position Int
+
+    file File @relation(fields: [fileId], references: [id], onDelete: Cascade)
+    tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+}

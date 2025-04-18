@@ -1,0 +1,23 @@
+model Vacancy {
+    id                  Int      @id @default(autoincrement())
+    title               String
+    description         String
+    detail              String
+    publicationDateTime DateTime
+    imageId             Int
+    isVisible           Boolean
+    position            Int
+
+    tags  VacancyTag[]
+    image File         @relation(fields: [imageId], references: [id], onDelete: NoAction)
+}
+
+model VacancyTag {
+    id        Int @id @default(autoincrement())
+    vacancyId Int
+    tagId     Int
+    position  Int
+
+    vacancy Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+    tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+}

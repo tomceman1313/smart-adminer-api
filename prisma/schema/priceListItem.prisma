@@ -1,0 +1,21 @@
+model PriceListItem {
+    id                       Int       @id @default(autoincrement())
+    name                     String
+    price                    Float
+    specialPrice             Float?
+    specialPriceFromDateTime DateTime?
+    specialPriceToDateTime   DateTime?
+    position                 Int
+
+    tags PriceListItemTag[]
+}
+
+model PriceListItemTag {
+    id              Int @id @default(autoincrement())
+    priceListItemId Int
+    tagId           Int
+    position        Int
+
+    tag           Tag           @relation(fields: [tagId], references: [id], onDelete: Cascade)
+    PriceListItem PriceListItem @relation(fields: [priceListItemId], references: [id], onDelete: Cascade)
+}

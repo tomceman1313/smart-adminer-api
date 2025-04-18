@@ -1,0 +1,25 @@
+model Page {
+    id             Int     @id @default(autoincrement())
+    name           String
+    pageName       String
+    info           String
+    title          String?
+    description    String?
+    body           String?
+    hasTitle       Boolean @default(false)
+    hasDescription Boolean @default(false)
+    hasImage       Boolean @default(false)
+    hasRichEditor  Boolean @default(false)
+
+    images PageImage[]
+}
+
+model PageImage {
+    id     Int    @id @default(autoincrement())
+    pageId Int
+    fileId Int
+    type   String
+
+    page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+    file File @relation(fields: [fileId], references: [id], onDelete: Cascade)
+}

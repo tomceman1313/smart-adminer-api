@@ -1,0 +1,8 @@
+model Notification {
+    id           Int       @id @default(autoincrement())
+    title        String
+    description  String
+    urlPath      String
+    fromDateTime DateTime?
+    toDateTime   DateTime?
+}

@@ -1,0 +1,45 @@
+model Article {
+    id                  Int      @id @default(autoincrement())
+    title               String
+    description         String
+    image               String
+    body                String
+    publishedAtDateTime DateTime
+    isVisible           Boolean
+    createdBy           Int
+    position            Int
+
+    categories            ArticleTag[]
+    attachedFiles         ArticleAttachedFile[]
+    ArticleAdditionalInfo ArticleAdditionalInfo?
+    user                  User                   @relation(fields: [createdBy], references: [id])
+}
+
+model ArticleAdditionalInfo {
+    id           Int       @id @default(autoincrement())
+    articleId    Int       @unique
+    fromDateTime DateTime?
+    toDateTime   DateTime?
+
+    article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+}
+
+model ArticleTag {
+    id        Int @id @default(autoincrement())
+    articleId Int
+    tagId     Int
+    position  Int
+
+    article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+    tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+}
+
+model ArticleAttachedFile {
+    id        Int @id @default(autoincrement())
+    articleId Int
+    fileId    Int
+    position  Int
+
+    article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+    file    File    @relation(fields: [fileId], references: [id], onDelete: Cascade)
+}

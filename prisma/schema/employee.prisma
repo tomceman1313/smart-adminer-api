@@ -1,0 +1,27 @@
+model Employee {
+    id             Int     @id @default(autoincrement())
+    firstName      String
+    lastName       String
+    jobTitle       String
+    degreeBefore   String?
+    degreeAfter    String?
+    phone          String?
+    phoneSecondary String?
+    imageId        Int     @unique
+    notes          String?
+    isVisible      Boolean
+    position       Int     @default(0)
+
+    image       File          @relation(fields: [imageId], references: [id])
+    departments EmployeeTag[]
+}
+
+model EmployeeTag {
+    id         Int @id @default(autoincrement())
+    employeeId Int
+    tagId      Int
+    position   Int
+
+    employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+    tag      Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+}

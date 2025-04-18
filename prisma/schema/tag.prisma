@@ -1,0 +1,13 @@
+model Tag {
+    id      Int     @id @default(autoincrement())
+    name    String
+    section String
+    private Boolean
+
+    products      ProductTag[]
+    articles      ArticleTag[]
+    files         FileTag[]
+    priceListItem PriceListItemTag[]
+    employee      EmployeeTag[]
+    vacancies     VacancyTag[]
+}
