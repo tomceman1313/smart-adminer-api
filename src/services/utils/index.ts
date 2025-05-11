@@ -9,4 +9,12 @@ export {
 	RenormalizePositions,
 	TagPosition,
 } from "./orderingPrismaHelpers";
-export { updateEntityTags } from "./prismaHelpers";
+
+export { createAttachedFiles } from "./prismaHelpers/createAttachedFiles";
+export { updateAttachedFiles } from "./prismaHelpers/updateAttachedFiles";
+export {
+	createEntityTags,
+	EntityTag,
+	EntityTagWithPosition,
+} from "./prismaHelpers/createEntityTags";
+export { updateEntityTags } from "./prismaHelpers/updateEntityTags";

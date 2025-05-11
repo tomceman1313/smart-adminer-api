@@ -1,3 +1,10 @@
+import {
+	createEntityTags,
+	EntityTagWithPosition,
+	getEntityLastPosition,
+} from "@services/utils";
+
+import { PRISMA_TABLES } from "types/types";
 import prisma from "../../config/database";
 import { AppError } from "../../middlewares/error.middleware";
 import { FOLDERS } from "../../types/fileFolders";
@@ -22,17 +29,16 @@ export async function createVacancy(data: CreateVacancyRequestBody) {
 		throw new AppError("Image upload failed", 500);
 	}
 
-	const lastPosition = await prisma.vacancy.aggregate({
-		_max: {
-			position: true,
-		},
-	});
+	const lastPosition = await getEntityLastPosition(
+		prisma.vacancy,
+		PRISMA_TABLES.vacancy
+	);
 
-	const lastPositionTags = await prisma.vacancyTag.aggregate({
-		_max: {
-			position: true,
-		},
-	});
+	const vacancyTags = await createEntityTags<EntityTagWithPosition>(
+		prisma.vacancyTag,
+		PRISMA_TABLES.vacancyTag,
+		data.tags
+	);
 
 	return await prisma.vacancy.create({
 		data: {
@@ -46,18 +52,8 @@ export async function createVacancy(data: CreateVacancyRequestBody) {
 					id: imageId,
 				},
 			},
-			...(data.tags &&
-				data.tags.length > 0 && {
-					tags: {
-						create: [
-							...data.tags.map((tag) => ({
-								tagId: tag,
-								position: (lastPositionTags._max.position || 0) + 10,
-							})),
-						],
-					},
-				}),
-			position: (lastPosition._max.position || 0) + 10,
+			...vacancyTags,
+			position: (lastPosition[0].position || 0) + 10,
 		},
 		include: {
 			image: true,

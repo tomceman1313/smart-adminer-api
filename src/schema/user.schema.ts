@@ -16,11 +16,28 @@ export const createUserSchema = z.object({
 	roleId: z.number({ required_error: "Role id is required." }),
 });
 
-export const changePasswordSchema = z.object({
+export const updateUserSchema = z.object({
+	username: z
+		.string({
+			required_error: "Username is required.",
+		})
+		.optional(),
 	password: z
 		.string({
-			required_error: "Password is required",
+			required_error: "Password is required.",
 		})
 		.nonempty("Password is required")
-		.min(6, "Password must be at least 6 characters long."),
+		.min(6, "Password must be at least 6 characters long.")
+		.optional(),
+	email: z.string().optional(),
+	firstName: z.string().optional(),
+	lastName: z.string().optional(),
+	roleId: z.number({ required_error: "Role id is required." }).optional(),
+});
+
+export const searchUsersSchema = z.object({
+	username: z.string().optional(),
+	id: z.number().optional(),
+	role: z.string().array().optional(),
+	email: z.string().optional(),
 });

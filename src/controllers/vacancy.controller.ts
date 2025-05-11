@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import {
 	createVacancySchema,
 	updateVacancySchema,
-} from "../schema/vacancy.schema";
-import { validateRequestBody } from "../services/utils";
-import vacancyService from "../services/vacancies/vacancy.service";
-import { ExtendedRequest } from "../types/types";
-import { CreateVacancyRequestBody, VacancyQuery } from "../types/vacancies";
-import { parseRequestQuery } from "../utils/formatting";
-import { parseIdFromUrlParams } from "../utils/helpers";
+} from "@schema/vacancy.schema";
+import { validateRequestBody } from "@services/utils";
+import vacancyService from "@services/vacancies/vacancy.service";
+import { ExtendedRequest } from "types/types";
+import { CreateVacancyRequestBody, VacancyQuery } from "types/vacancies";
+import { parseRequestQuery } from "@utils/formatting";
+import { parseIdFromUrlParams } from "@utils/helpers";
 
 // search vacancies
 export async function searchVacancies(

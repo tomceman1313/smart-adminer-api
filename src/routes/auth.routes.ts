@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { logIn, refresh, logOut } from "@controllers/auth.controller";
 import asyncHandler from "../middlewares/asyncHandler.middleware";
+import {logIn, logOut, refresh} from "@controllers/auth.controller";
 import { ENDPOINTS } from "types/endpoints";
 
 const router = Router();

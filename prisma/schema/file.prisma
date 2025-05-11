@@ -9,12 +9,13 @@ model File {
     image       String?
     position    Int
 
-    tags        FileTag[]
-    articles    ArticleAttachedFile[]
-    employee    Employee?
-    pageImage   PageImage[]
-    productFile ProductFile[]
-    vacancies   Vacancy[]
+    tags         FileTag[]
+    articles     ArticleAttachedFile[]
+    employee     Employee?
+    pageImage    PageImage[]
+    productFile  ProductFile[]
+    vacancies    Vacancy[]
+    articleImage Article[]
 }
 
 model FileTag {

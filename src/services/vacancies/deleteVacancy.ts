@@ -20,7 +20,7 @@ export async function deleteVacancy(id: number) {
 	});
 
 	if (vacancy?.image.context === FOLDERS.vacancy)
-		await deleteFile(undefined, vacancy.image, FOLDERS.vacancy);
+		await deleteFile(undefined, vacancy.image, FOLDERS.vacancy, true);
 
 	return result;
 }

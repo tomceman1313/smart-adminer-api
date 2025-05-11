@@ -7,12 +7,13 @@ model Employee {
     degreeAfter    String?
     phone          String?
     phoneSecondary String?
-    imageId        Int     @unique
+    email          String?
+    imageId        Int?    @unique
     notes          String?
     isVisible      Boolean
     position       Int     @default(0)
 
-    image       File          @relation(fields: [imageId], references: [id])
+    image       File?         @relation(fields: [imageId], references: [id])
     departments EmployeeTag[]
 }
 

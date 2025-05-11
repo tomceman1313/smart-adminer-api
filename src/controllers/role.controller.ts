@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import roleService from "../services/role/role.service";
+import roleService from "../services/roles/role.service";
 import { validateRequestBody } from "../services/utils";
 import {
 	createPermissionSchema,

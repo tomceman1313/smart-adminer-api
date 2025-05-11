@@ -2,17 +2,18 @@ model Article {
     id                  Int      @id @default(autoincrement())
     title               String
     description         String
-    image               String
+    imageId             Int
     body                String
     publishedAtDateTime DateTime
     isVisible           Boolean
     createdBy           Int
     position            Int
 
-    categories            ArticleTag[]
+    tags                  ArticleTag[]
     attachedFiles         ArticleAttachedFile[]
     ArticleAdditionalInfo ArticleAdditionalInfo?
-    user                  User                   @relation(fields: [createdBy], references: [id])
+    user                  User                   @relation(fields: [createdBy], references: [id], onDelete: NoAction)
+    image                 File                   @relation(fields: [imageId], references: [id], onDelete: NoAction)
 }
 
 model ArticleAdditionalInfo {
@@ -35,10 +36,11 @@ model ArticleTag {
 }
 
 model ArticleAttachedFile {
-    id        Int @id @default(autoincrement())
-    articleId Int
-    fileId    Int
-    position  Int
+    id           Int     @id @default(autoincrement())
+    articleId    Int
+    fileId       Int
+    isInsideBody Boolean
+    position     Int?
 
     article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
     file    File    @relation(fields: [fileId], references: [id], onDelete: Cascade)

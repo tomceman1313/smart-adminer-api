@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import prisma from "../../config/database";
 import { AppError } from "../../middlewares/error.middleware";
-import { PrismaTable } from "../../types/types";
+import { PrismaModel, PrismaTable } from "../../types/types";
 
 export const POSITION_GAP = 10;
 export const MAX_SAFE_POSITION = 1_000_000_000;
@@ -75,16 +74,6 @@ export async function getEntityLastPosition(
 		},
 	];
 }
-
-type PrismaModel = {
-	findMany: Function;
-	deleteMany: Function;
-	create: Function;
-	update: Function;
-	updateMany: Function;
-	aggregate: Function;
-	findUnique: Function;
-};
 
 // Changes positions based on calculation of record index multiplied by position gap
 export async function RenormalizePositions<T extends { id: number }>(

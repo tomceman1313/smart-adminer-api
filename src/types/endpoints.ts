@@ -1,9 +1,11 @@
 const SERVICES_BASE = {
 	auth: "/auth",
+	articles: "/articles",
 	categories: "/tags",
+	employees: "/employees",
+	files: "/files",
 	users: "/users",
 	vacancies: "/vacancies",
-	files: "/files",
 };
 
 export const ENDPOINTS = {
@@ -11,6 +13,21 @@ export const ENDPOINTS = {
 		login: `${SERVICES_BASE.auth}/login`,
 		refresh: `${SERVICES_BASE.auth}/refresh`,
 		logout: `${SERVICES_BASE.auth}/logout`,
+	},
+	articles: {
+		base: `${SERVICES_BASE.articles}`,
+		byId: `${SERVICES_BASE.articles}/:id`,
+		order: `${SERVICES_BASE.articles}/:id/order`,
+	},
+	employees: {
+		base: `${SERVICES_BASE.employees}`,
+		byId: `${SERVICES_BASE.employees}/:id`,
+		order: `${SERVICES_BASE.employees}/:id/order`,
+	},
+	files: {
+		base: `${SERVICES_BASE.files}`,
+		byId: `${SERVICES_BASE.files}/:id`,
+		order: `${SERVICES_BASE.files}/:id/order`,
 	},
 	tags: {
 		base: `${SERVICES_BASE.categories}`,
@@ -30,10 +47,5 @@ export const ENDPOINTS = {
 	vacancies: {
 		base: `${SERVICES_BASE.vacancies}`,
 		byId: `${SERVICES_BASE.vacancies}/:id`,
-	},
-	files: {
-		base: `${SERVICES_BASE.files}`,
-		byId: `${SERVICES_BASE.files}/:id`,
-		order: `${SERVICES_BASE.files}/:id/order`,
 	},
 };

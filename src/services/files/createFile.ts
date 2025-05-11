@@ -1,14 +1,19 @@
+import { generateUniqueId } from "@utils/helpers";
+import { FOLDERS } from "types/fileFolders";
+import { CreateFileBodyRequest } from "types/files";
+import { PRISMA_TABLES } from "types/types";
 import prisma from "../../config/database";
-import { FOLDERS } from "../../types/fileFolders";
-import { CreateFileBodyRequest } from "../../types/files";
-import { PRISMA_TABLES } from "../../types/types";
-import { generateUniqueId } from "../../utils/helpers";
-import { getEntityLastPosition, TagPosition } from "../utils";
+import {
+	createEntityTags,
+	EntityTagWithPosition,
+	getEntityLastPosition,
+} from "../utils";
 import { uploadFile } from "../utils/fileModifications";
 
 export async function createFile(data: CreateFileBodyRequest) {
 	// create preview image of uploaded file
 	let imageFileName;
+
 	if (data.image) {
 		imageFileName = await uploadPreviewImage(data.image, data.context);
 	}
@@ -18,14 +23,12 @@ export async function createFile(data: CreateFileBodyRequest) {
 		PRISMA_TABLES.fileTag
 	);
 
-	let tagsLastPosition: TagPosition[] = [];
-	if (data.tags) {
-		tagsLastPosition = await getEntityLastPosition(
-			prisma.fileTag,
-			PRISMA_TABLES.fileTag,
-			data.tags
-		);
-	}
+	// get create object with tags and positions
+	const fileTags = await createEntityTags<EntityTagWithPosition>(
+		prisma.fileTag,
+		PRISMA_TABLES.fileTag,
+		data.tags
+	);
 
 	let fileName = data.name || generateUniqueId();
 
@@ -35,7 +38,7 @@ export async function createFile(data: CreateFileBodyRequest) {
 		outputFilePath: `/${data.context}`,
 	});
 
-	return await prisma.file.create({
+	return prisma.file.create({
 		data: {
 			image: imageFileName,
 			name: fileName,
@@ -45,17 +48,7 @@ export async function createFile(data: CreateFileBodyRequest) {
 			title: data.title,
 			description: data.description,
 			position: (filesLastPosition[0].position || 0) + 10,
-			...(data.tags &&
-				data.tags.length > 0 && {
-					tags: {
-						create: [
-							...tagsLastPosition.map((tag) => ({
-								tagId: tag.tagId!,
-								position: (tag.position || 0) + 10,
-							})),
-						],
-					},
-				}),
+			...fileTags,
 		},
 		include: {
 			tags: true,

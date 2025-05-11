@@ -1,10 +1,10 @@
+import { updateEntityTags } from "@services/utils";
 import prisma from "../../config/database";
 import { AppError } from "../../middlewares/error.middleware";
 import { FOLDERS } from "../../types/fileFolders";
 import { UpdateFileRequestBody } from "../../types/files";
 import { generateUniqueId } from "../../utils/helpers";
 import { deleteFile, uploadFile } from "../utils/fileModifications";
-import { updateEntityTags } from "../utils/prismaHelpers";
 
 // updates vacancy data
 // add and remove tags based on provided array

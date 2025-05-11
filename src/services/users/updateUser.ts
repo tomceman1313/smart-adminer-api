@@ -1,28 +1,22 @@
+import { hashPassword } from "@services/auth/utils";
 import prisma from "../../config/database";
-import {
-	isRecordNotFoundError,
-	isUniqueConstraintError,
-} from "../utils/errorHandling";
-import { AppError } from "../../middlewares/error.middleware";
+import { User } from "types/users";
 
-export async function updateUser(
-	id: number,
-	data: { name?: string; email?: string }
-) {
-	try {
-		return await prisma.user.update({ where: { id }, data });
-	} catch (error) {
-		if (isRecordNotFoundError(error)) {
-			throw new AppError("User not found", 404);
-		}
+export async function updateUser(id: number, data: Partial<User>) {
+	let hashedPassword: string | undefined = undefined;
 
-		if (
-			isUniqueConstraintError(error, "username") ||
-			isUniqueConstraintError(error, "email")
-		) {
-			throw new AppError("Username or email already exists.", 400);
-		}
-
-		throw error;
+	if (data.password) {
+		hashedPassword = await hashPassword(data.password);
 	}
+
+	return prisma.user.update({
+		where: { id },
+		data: {
+			...data,
+			password: hashedPassword,
+		},
+		omit: {
+			password: true,
+		},
+	});
 }

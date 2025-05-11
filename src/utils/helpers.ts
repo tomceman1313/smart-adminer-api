@@ -22,3 +22,11 @@ export function generateUniqueId() {
 
 	return crypto.randomBytes(16).toString("hex");
 }
+
+export function findRemovedIds(
+	newState: number[],
+	previousState: number[]
+): number[] {
+	const newIds = new Set(newState.map((id) => id));
+	return previousState.filter((id) => !newIds.has(id));
+}

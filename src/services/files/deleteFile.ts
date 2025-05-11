@@ -7,7 +7,8 @@ import { Prisma } from "@prisma/client";
 export async function deleteFile(
 	id?: number, // when file is not fetched
 	fetchedFile?: Prisma.FileGetPayload<{}>, // when file is already fetched
-	folder?: string
+	folder?: string,
+	ignoreFileNotFoundError?: boolean
 ) {
 	const file = fetchedFile || (await prisma.file.findUnique({ where: { id } }));
 
@@ -17,8 +18,10 @@ export async function deleteFile(
 		`/${folder || file.context}/${file.name}`
 	);
 
-	if (!result.success) throw new AppError("File not found", 404);
+	if (!result.success && !ignoreFileNotFoundError)
+		throw new AppError("File not found", 404);
 
+	// delete preview image
 	if (file.image) {
 		await deleteFileHandler(
 			`/${folder || FOLDERS.fileStorage}/${FOLDERS.filePreviewImages}/${file.image}`

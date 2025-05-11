@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { Request } from "express";
 
 export const DEFAULT_PAGE_SIZE = 10;
@@ -22,8 +23,24 @@ export interface PaginationQuery {
 export type PrismaTable = keyof typeof PRISMA_TABLES;
 
 export const PRISMA_TABLES = {
+	article: "Article",
+	articleTag: "ArticleTag",
 	file: "File",
 	fileTag: "FileTag",
+	employee: "Employee",
+	employeeTag: "EmployeeTag",
 	priceListItem: "PriceListItem",
 	priceListItemTag: "PriceListItemTag",
+	vacancy: "Vacancy",
+	vacancyTag: "VacancyTag",
+};
+
+export type PrismaModel = {
+	findMany: Function;
+	deleteMany: Function;
+	create: Function;
+	update: Function;
+	updateMany: Function;
+	aggregate: Function;
+	findUnique: Function;
 };

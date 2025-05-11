@@ -10,7 +10,9 @@ export async function logIn(username: string, password: string) {
 		where: {
 			username,
 		},
-		include: {
+		select: {
+			password: true,
+			username: true,
 			role: true,
 		},
 	});

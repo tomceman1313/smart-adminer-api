@@ -1,10 +1,10 @@
+import { updateEntityTags } from "@services/utils";
 import prisma from "../../config/database";
 import { AppError } from "../../middlewares/error.middleware";
 import { FOLDERS } from "../../types/fileFolders";
 import { UpdateVacancyRequestBody } from "../../types/vacancies";
 import { createFile } from "../files/createFile";
 import { deleteFile } from "../files/deleteFile";
-import { updateEntityTags } from "../utils/prismaHelpers";
 
 // updates vacancy data
 // add and remove tags based on provided array
@@ -68,7 +68,7 @@ export async function updateVacancy(
 
 	// if image was updated, delete previous one
 	if (isImageUpdated && vacancy.image.context === FOLDERS.vacancy)
-		await deleteFile(undefined, vacancy.image, FOLDERS.vacancy);
+		await deleteFile(undefined, vacancy.image, FOLDERS.vacancy, true);
 
 	return updatedVacancy;
 }
