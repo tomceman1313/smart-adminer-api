@@ -13,7 +13,7 @@ export async function validateRequestBody<
 	if (!bodyValidation.success) {
 		const errorMessages = bodyValidation.error.issues.map(
 			(issue) =>
-				`${issue.path.toString()} is ${issue.message.toLocaleLowerCase()}`
+				`${issue.path.toString()} - ${issue.message.toLocaleLowerCase()}`
 		);
 
 		throw new AppError(errorMessages.toString(), 400);

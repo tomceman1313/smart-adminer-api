@@ -83,9 +83,6 @@ describe(`ORDER - Main ${ENDPOINTS.employees.order}`, () => {
 
 describe(`ORDER - Tags ${ENDPOINTS.employees.order}`, () => {
 	it("Move from first to second", async () => {
-		const tags = await prisma.employeeTag.findMany();
-		console.log(tags);
-
 		const res = await request(app)
 			.patch(
 				`/api/${ENDPOINTS.employees.order.replace(":id", employee1.id.toString())}`
