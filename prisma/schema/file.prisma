@@ -12,7 +12,8 @@ model File {
     tags         FileTag[]
     articles     ArticleAttachedFile[]
     employee     Employee?
-    pageImage    PageImage[]
+    pageImage    Page[]
+    pageImages   PageImage[]
     productFile  ProductFile[]
     vacancies    Vacancy[]
     articleImage Article[]

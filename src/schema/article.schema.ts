@@ -19,6 +19,7 @@ export const createArticleSchema = z.object({
 	attachedFiles: z
 		.array(
 			createFileSchema.extend({
+				fileId: z.number().optional(),
 				isInsideBody: z.boolean(),
 				position: z.number(),
 			})

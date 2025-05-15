@@ -13,7 +13,7 @@ import { changeOrderSchema } from "@schema/common";
 import prisma from "@config/database";
 import { changeOrder } from "@services/utils/orderingPrismaHelpers";
 
-// search vacancies
+// search articles
 export async function searchArticles(
 	req: ExtendedRequest,
 	res: Response

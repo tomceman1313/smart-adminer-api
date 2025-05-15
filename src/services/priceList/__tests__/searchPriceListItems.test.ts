@@ -54,8 +54,6 @@ describe(`GET ${ENDPOINTS.priceList.base}`, () => {
 			`/api/${ENDPOINTS.priceList.base}?id=${item.id}`
 		);
 
-		console.log(res.body);
-
 		expect(res.status).toEqual(200);
 
 		expect(res.body.data.length).toEqual(1);

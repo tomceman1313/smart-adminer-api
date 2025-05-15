@@ -1,10 +1,12 @@
 const SERVICES_BASE = {
 	auth: "/auth",
 	articles: "/articles",
-	categories: "/tags",
 	employees: "/employees",
 	files: "/files",
 	priceList: "/priceList",
+	pages: "/pages",
+	notifications: "/notifications",
+	tags: "/tags",
 	users: "/users",
 	vacancies: "/vacancies",
 };
@@ -30,14 +32,22 @@ export const ENDPOINTS = {
 		byId: `${SERVICES_BASE.files}/:id`,
 		order: `${SERVICES_BASE.files}/:id/order`,
 	},
+	pages: {
+		base: `${SERVICES_BASE.pages}`,
+		byId: `${SERVICES_BASE.pages}/:id`,
+	},
 	priceList: {
 		base: `${SERVICES_BASE.priceList}`,
 		byId: `${SERVICES_BASE.priceList}/:id`,
 		order: `${SERVICES_BASE.priceList}/:id/order`,
 	},
+	notifications: {
+		base: `${SERVICES_BASE.notifications}`,
+		byId: `${SERVICES_BASE.notifications}/:id`,
+	},
 	tags: {
-		base: `${SERVICES_BASE.categories}`,
-		byId: `${SERVICES_BASE.categories}/:id`,
+		base: `${SERVICES_BASE.tags}`,
+		byId: `${SERVICES_BASE.tags}/:id`,
 	},
 	users: {
 		base: `${SERVICES_BASE.users}`,

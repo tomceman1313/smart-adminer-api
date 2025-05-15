@@ -17,7 +17,7 @@ export interface ExtendedRequest<
 export interface PaginationQuery {
 	offset?: number;
 	size?: number;
-	totalElements?: number;
+	// totalElements?: number;
 }
 
 export type PrismaTable = keyof typeof PRISMA_TABLES;

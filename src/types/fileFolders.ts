@@ -3,6 +3,7 @@ export const FOLDERS = {
 	base: "public",
 	fileStorage: "uploads",
 	employee: "employee",
+	page: "page",
 	priceList: "priceListItem",
 	priceListItemTag: "priceListItemTag",
 	vacancy: "vacancy",

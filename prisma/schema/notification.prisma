@@ -3,6 +3,7 @@ model Notification {
     title        String
     description  String
     urlPath      String
+    type         String
     fromDateTime DateTime?
     toDateTime   DateTime?
 }
