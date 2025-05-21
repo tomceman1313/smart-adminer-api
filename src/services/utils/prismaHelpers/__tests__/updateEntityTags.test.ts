@@ -1,15 +1,11 @@
 import prisma from "@config/database";
-import { updateEntityTags } from "../updateEntityTags";
+import { updateEntityTags } from "../tags/updateEntityTags";
 
 let tagId = 0;
 let secondTagId = 0;
 let itemId = 0;
 
 beforeAll(async () => {
-	await prisma.$connect();
-	await prisma.priceListItem.deleteMany();
-	await prisma.tag.deleteMany();
-
 	await prisma.tag.createMany({
 		data: [
 			{
@@ -55,6 +51,9 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+	await prisma.priceListItem.deleteMany();
+	await prisma.priceListItemTag.deleteMany();
+	await prisma.tag.deleteMany();
 	await prisma.$disconnect();
 });
 

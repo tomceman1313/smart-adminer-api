@@ -2,20 +2,13 @@ import { app } from "@src/app";
 import { ImageBase64Small } from "@src/mocks/test.constants";
 import request from "supertest";
 import { ENDPOINTS } from "types/endpoints";
-import {
-	context,
-	createTestTags,
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-} from "./setup";
+import { context, createTestTags, cleanUpAfterTests } from "./setup";
 
 let tagId = 0;
 let tagIdSecond = 0;
 let fileId = 0;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
 	const tags = await createTestTags();
 	tagId = tags.firstTagId;
 	tagIdSecond = tags.secondTagId;

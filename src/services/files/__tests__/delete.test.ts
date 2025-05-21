@@ -2,18 +2,11 @@ import { ENDPOINTS } from "types/endpoints";
 import request from "supertest";
 import { app } from "@src/app";
 import prisma from "@config/database";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestFile,
-	createTestTags,
-} from "./setup";
+import { cleanUpAfterTests, createTestFile, createTestTags } from "./setup";
 
 let fileId = 0;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
 	const tags = await createTestTags();
 
 	const file = await createTestFile([tags.firstTagId, tags.secondTagId]);

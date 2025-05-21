@@ -4,7 +4,6 @@ import { app } from "@src/app";
 import { ImageBase64 } from "@mocks/test.constants";
 import {
 	cleanUpAfterTests,
-	cleanUpBeforeTests,
 	context,
 	createTestFile,
 	createTestTags,
@@ -16,8 +15,6 @@ let fileId = 0;
 let previewImage = "";
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
 	const tags = await createTestTags();
 	tagId = tags.firstTagId;
 

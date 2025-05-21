@@ -7,13 +7,9 @@ import { prepareTestFilesData } from "../__mocks__/mocks";
 
 export const context = "uploadsTest";
 
-export async function cleanUpBeforeTests() {
-	await prisma.$connect();
+export async function cleanUpAfterTests() {
 	await prisma.file.deleteMany();
 	await prisma.tag.deleteMany();
-}
-
-export async function cleanUpAfterTests() {
 	await deleteFolder(context);
 	await prisma.$disconnect();
 }

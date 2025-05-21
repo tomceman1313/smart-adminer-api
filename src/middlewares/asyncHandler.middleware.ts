@@ -14,7 +14,6 @@ const asyncHandler =
 				}
 
 				if (error.code === "P2003") {
-					console.log(error);
 					return next(new AppError("Foreign key not found", 400));
 				}
 

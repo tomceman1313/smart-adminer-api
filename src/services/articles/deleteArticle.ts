@@ -1,6 +1,7 @@
 import prisma from "@config/database";
+import { deleteAttachedFiles } from "@services/utils";
 import { deleteFile } from "@services/utils/fileModifications";
-import { deleteAttachedFiles } from "@services/utils/prismaHelpers/deleteAttachedFiles";
+
 import { FOLDERS } from "types/fileFolders";
 
 export async function deleteArticle(id: number) {

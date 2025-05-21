@@ -1,6 +1,6 @@
 import prisma from "@config/database";
 import { SECTIONS } from "types/fileFolders";
-import { updateEntityTags } from "../prismaHelpers/updateEntityTags";
+import { updateEntityTags } from "../prismaHelpers/tags/updateEntityTags";
 import { cleanUp } from "./setup";
 
 let tagId = 0;
@@ -8,8 +8,6 @@ let secondTagId = 0;
 let itemId = 0;
 
 beforeAll(async () => {
-	await prisma.$connect();
-
 	await prisma.tag.createMany({
 		data: [
 			{

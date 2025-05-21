@@ -135,8 +135,6 @@ describe("General entities", () => {
 		let secondRecord = records[1].id;
 		let thirdRecord = records[2].id;
 
-		console.log(records);
-
 		let updatedRecord = await changeOrder({
 			model: prisma.priceListItem,
 			recordId: secondRecord,

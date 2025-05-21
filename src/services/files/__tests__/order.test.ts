@@ -5,14 +5,12 @@ import { app } from "@src/app";
 import { PRISMA_TABLES, PrismaTable } from "types/types";
 import prisma from "@config/database";
 import "./setup";
-import { cleanUpAfterTests, cleanUpBeforeTests, createTestTags } from "./setup";
+import { cleanUpAfterTests, createTestTags } from "./setup";
 
 let tagId = 0;
 let tagIdSecond = 0;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
 	const tags = await createTestTags();
 	tagId = tags.firstTagId;
 	tagIdSecond = tags.secondTagId;

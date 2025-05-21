@@ -39,6 +39,7 @@ export type PrismaModel = {
 	findMany: Function;
 	deleteMany: Function;
 	create: Function;
+	createMany: Function;
 	update: Function;
 	updateMany: Function;
 	aggregate: Function;

@@ -1,5 +1,5 @@
 import { PrismaModel } from "types/types";
-import { getEntityLastPosition } from "../orderingPrismaHelpers";
+import { getEntityLastPosition } from "../../orderingPrismaHelpers";
 
 export type EntityTag = { tagId: number };
 

@@ -10,11 +10,12 @@ export {
 	TagPosition,
 } from "./orderingPrismaHelpers";
 
-export { createAttachedFiles } from "./prismaHelpers/createAttachedFiles";
-export { updateAttachedFiles } from "./prismaHelpers/updateAttachedFiles";
+export { createAttachedFiles } from "./prismaHelpers/attachedFiles/createAttachedFiles";
+export { updateAttachedFiles } from "./prismaHelpers/attachedFiles/updateAttachedFiles";
+export { deleteAttachedFiles } from "@services/utils/prismaHelpers/attachedFiles/deleteAttachedFiles";
 export {
 	createEntityTags,
 	EntityTag,
 	EntityTagWithPosition,
-} from "./prismaHelpers/createEntityTags";
-export { updateEntityTags } from "./prismaHelpers/updateEntityTags";
+} from "./prismaHelpers/tags/createEntityTags";
+export { updateEntityTags } from "./prismaHelpers/tags/updateEntityTags";

@@ -1,6 +1,6 @@
 import prisma from "@config/database";
 import { ArticleAttachedFile } from "@prisma/client";
-import { deleteFile } from "../fileModifications";
+import { deleteFile } from "@services/utils/fileModifications";
 
 export async function deleteAttachedFiles(
 	attachedFiles: ArticleAttachedFile[]

@@ -1,24 +1,14 @@
-import { createFile } from "@services/files/createFile";
-import { createConnectedFiles } from "@services/utils/prismaHelpers/createConnectedFiles";
-import { FOLDERS } from "types/fileFolders";
+import { createConnectedFile } from "@services/utils/prismaHelpers/connectedFiles/createConnectedFile";
+import { createConnectedFiles } from "@services/utils/prismaHelpers/connectedFiles/createConnectedFiles";
+import { SECTIONS } from "types/fileFolders";
 import { CreatePageRequestBody } from "types/pages";
 import prisma from "../../config/database";
+import { validateCreatePageData } from "./utils";
 
 export async function createPage(data: CreatePageRequestBody) {
-	let imageId;
+	validateCreatePageData(data);
 
-	if (data.image) {
-		const isAlreadyCreated = data.image.id;
-
-		const newImage = isAlreadyCreated
-			? data.image
-			: await createFile({
-					...data.image,
-					context: FOLDERS.page,
-				});
-
-		imageId = newImage.id;
-	}
+	const image = await createConnectedFile(SECTIONS.page, data.image);
 
 	const images = await createConnectedFiles(data.images);
 
@@ -34,7 +24,7 @@ export async function createPage(data: CreatePageRequestBody) {
 			hasDescription: data.hasDescription,
 			hasImage: data.hasImage,
 			hasRichEditor: data.hasRichEditor,
-			imageId,
+			imageId: image?.id,
 			...(images && {
 				images: {
 					create: [

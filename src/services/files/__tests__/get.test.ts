@@ -3,7 +3,6 @@ import request from "supertest";
 import { ENDPOINTS } from "types/endpoints";
 import {
 	cleanUpAfterTests,
-	cleanUpBeforeTests,
 	context,
 	createTestFile,
 	createTestTags,
@@ -13,8 +12,6 @@ let tagId = 0;
 let fileId = 0;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
 	const tags = await createTestTags();
 
 	const file = await createTestFile([tags.firstTagId, tags.secondTagId]);

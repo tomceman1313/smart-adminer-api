@@ -12,13 +12,41 @@ export const createPageSchema = z.object({
 	hasDescription: z.boolean().optional(),
 	hasImage: z.boolean().optional(),
 	hasRichEditor: z.boolean().optional(),
-	image: createFileSchema.extend({
-		id: z.number().optional(),
-	}),
+	image: createFileSchema
+		.extend({
+			id: z.number().optional(),
+		})
+		.optional(),
 	images: z
 		.array(
 			createFileSchema.extend({
 				id: z.number().optional(),
+			})
+		)
+		.optional(),
+});
+
+export const updatePageSchema = z.object({
+	name: z.string().optional(),
+	pageName: z.string().optional(),
+	info: z.string().optional(),
+	title: z.string().nullish(),
+	description: z.string().nullish(),
+	body: z.string().nullish(),
+	hasTitle: z.boolean().optional(),
+	hasDescription: z.boolean().optional(),
+	hasImage: z.boolean().optional(),
+	hasRichEditor: z.boolean().optional(),
+	image: createFileSchema
+		.extend({
+			id: z.number().optional(),
+		})
+		.nullish(),
+	images: z
+		.array(
+			createFileSchema.extend({
+				id: z.number().optional(),
+				base64: z.string().optional(),
 			})
 		)
 		.optional(),
