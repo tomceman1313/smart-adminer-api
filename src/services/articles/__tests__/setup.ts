@@ -4,16 +4,7 @@ import { deleteFolder } from "@services/utils/fileModifications";
 import { FOLDERS } from "types/fileFolders";
 import { createArticle } from "../createArticle";
 
-export async function cleanUpBeforeTests() {
-	await prisma.$connect();
-	await prisma.article.deleteMany();
-	await prisma.tag.deleteMany();
-	await prisma.file.deleteMany();
-	await prisma.user.deleteMany();
-	await prisma.role.deleteMany();
-}
-
-export async function cleanUpAfterTests() {
+export async function cleanUp() {
 	await deleteFolder(FOLDERS.article);
 
 	await prisma.article.deleteMany();
@@ -22,25 +13,6 @@ export async function cleanUpAfterTests() {
 	await prisma.user.deleteMany();
 	await prisma.role.deleteMany();
 	await prisma.$disconnect();
-}
-
-export async function createTestTags() {
-	await prisma.tag.createMany({
-		data: [
-			{
-				name: "Test",
-				private: false,
-				section: FOLDERS.article,
-			},
-			{
-				name: "Test",
-				private: false,
-				section: FOLDERS.article,
-			},
-		],
-	});
-
-	return prisma.tag.findMany();
 }
 
 export async function createTestUser() {

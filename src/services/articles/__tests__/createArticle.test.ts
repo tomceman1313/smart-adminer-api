@@ -1,14 +1,10 @@
 import { ENDPOINTS } from "types/endpoints";
 import request from "supertest";
 import { app } from "@src/app";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestTags,
-	createTestUser,
-} from "./setup";
+import { cleanUp, createTestUser } from "./setup";
 import { ImageBase64, ImageBase64Small } from "@mocks/test.constants";
-import { FOLDERS } from "types/fileFolders";
+import { FOLDERS, SECTIONS } from "types/fileFolders";
+import { createTestTags } from "@services/utils/testSetupFunctions";
 
 let tagId = 0;
 let userId = 0;
@@ -40,9 +36,7 @@ const requestBody = (tagId: number, userId: number) => ({
 });
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
-	const tags = await createTestTags();
+	const tags = await createTestTags(2, SECTIONS.article);
 	tagId = tags[0].id;
 
 	const user = await createTestUser();
@@ -50,7 +44,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`POST /api${ENDPOINTS.articles.base}`, () => {

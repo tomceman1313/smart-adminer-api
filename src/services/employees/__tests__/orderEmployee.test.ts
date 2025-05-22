@@ -4,13 +4,10 @@ import request from "supertest";
 import { ENDPOINTS } from "types/endpoints";
 import { PRISMA_TABLES, PrismaTable } from "types/types";
 import "./setup";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestEmployee,
-	createTestTags,
-} from "./setup";
+import { cleanUp, createTestEmployee } from "./setup";
 import { Employee } from "@prisma/client";
+import { createTestTags } from "@services/utils/testSetupFunctions";
+import { SECTIONS } from "types/fileFolders";
 
 interface ExtendedEmployee extends Employee {
 	departments: Array<{
@@ -23,9 +20,7 @@ let departmentId = 0;
 let employee1: ExtendedEmployee, employee2: ExtendedEmployee;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
-	const tags = await createTestTags();
+	const tags = await createTestTags(1, SECTIONS.employee);
 	departmentId = tags[0].id;
 
 	employee1 = await createTestEmployee([departmentId]);
@@ -33,7 +28,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`ORDER - Main ${ENDPOINTS.employees.order}`, () => {

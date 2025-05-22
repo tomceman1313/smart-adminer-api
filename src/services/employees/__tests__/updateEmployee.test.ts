@@ -3,13 +3,9 @@ import { Employee } from "@prisma/client";
 import { app } from "@src/app";
 import request from "supertest";
 import { ENDPOINTS } from "types/endpoints";
-import { FOLDERS } from "types/fileFolders";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestEmployee,
-	createTestTags,
-} from "./setup";
+import { FOLDERS, SECTIONS } from "types/fileFolders";
+import { createTestEmployee, cleanUp } from "./setup";
+import { createTestTags } from "@services/utils/testSetupFunctions";
 
 let departmentId = 0;
 let secondDepartmentId = 0;
@@ -35,9 +31,7 @@ const requestBody = (departmentIds?: number[]) => ({
 });
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
-	const tags = await createTestTags();
+	const tags = await createTestTags(2, SECTIONS.employee);
 	departmentId = tags[0].id;
 	secondDepartmentId = tags[1].id;
 
@@ -46,7 +40,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`PATCH /api${ENDPOINTS.employees.byId}`, () => {

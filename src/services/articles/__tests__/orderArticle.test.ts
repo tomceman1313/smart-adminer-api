@@ -7,12 +7,9 @@ import { PRISMA_TABLES, PrismaTable } from "types/types";
 import { prepareTestArticles } from "../__mocks__/articles.mock";
 import { createArticle } from "../createArticle";
 import "./setup";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestTags,
-	createTestUser,
-} from "./setup";
+import { cleanUp, createTestUser } from "./setup";
+import { createTestTags } from "@services/utils/testSetupFunctions";
+import { SECTIONS } from "types/fileFolders";
 
 let tagId = 0;
 let tagIdSecond = 0;
@@ -20,9 +17,7 @@ let userId = 0;
 let article1: Article, article2: Article;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
-	const tags = await createTestTags();
+	const tags = await createTestTags(2, SECTIONS.article);
 	tagId = tags[0].id;
 	tagIdSecond = tags[1].id;
 
@@ -37,7 +32,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`ORDER - Main ${ENDPOINTS.articles.order}`, () => {

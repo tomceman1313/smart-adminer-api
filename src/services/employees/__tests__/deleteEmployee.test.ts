@@ -2,23 +2,17 @@ import prisma from "@config/database";
 import { app } from "@src/app";
 import request from "supertest";
 import { ENDPOINTS } from "types/endpoints";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestEmployee,
-} from "./setup";
+import { cleanUp, createTestEmployee } from "./setup";
 
 let employeeId = 0;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
 	const employee = await createTestEmployee([]);
 	employeeId = employee.id;
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`DELETE ${ENDPOINTS.employees.byId}`, () => {

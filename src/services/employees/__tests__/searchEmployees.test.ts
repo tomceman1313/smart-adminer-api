@@ -1,21 +1,15 @@
+import { createTestTags } from "@services/utils/testSetupFunctions";
 import { app } from "@src/app";
 import request from "supertest";
 import { ENDPOINTS } from "types/endpoints";
-import { FOLDERS } from "types/fileFolders";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestEmployee,
-	createTestTags,
-} from "./setup";
+import { FOLDERS, SECTIONS } from "types/fileFolders";
+import { cleanUp, createTestEmployee } from "./setup";
 
 let departmentId = 0;
 let employeeId = 0;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
-	const tags = await createTestTags();
+	const tags = await createTestTags(1, SECTIONS.employee);
 	departmentId = tags[0].id;
 
 	const employee = await createTestEmployee([departmentId]);
@@ -23,7 +17,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`GET /api${ENDPOINTS.employees.base}`, () => {

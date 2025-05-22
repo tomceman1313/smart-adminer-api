@@ -3,15 +3,10 @@ import { Article, ArticleAttachedFile } from "@prisma/client";
 import { app } from "@src/app";
 import request from "supertest";
 import { ENDPOINTS } from "types/endpoints";
-import { FOLDERS } from "types/fileFolders";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestArticle,
-	createTestTags,
-	createTestUser,
-} from "./setup";
+import { FOLDERS, SECTIONS } from "types/fileFolders";
+import { cleanUp, createTestArticle, createTestUser } from "./setup";
 import prisma from "@config/database";
+import { createTestTags } from "@services/utils/testSetupFunctions";
 
 let tagId = 0;
 let secondTagId = 0;
@@ -56,9 +51,7 @@ const requestBody = (
 });
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
-	const tags = await createTestTags();
+	const tags = await createTestTags(2, SECTIONS.article);
 	tagId = tags[0].id;
 	secondTagId = tags[1].id;
 
@@ -70,7 +63,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`PATCH /api${ENDPOINTS.articles.byId}`, () => {

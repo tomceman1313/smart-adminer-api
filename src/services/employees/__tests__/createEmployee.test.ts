@@ -1,21 +1,20 @@
-import { ENDPOINTS } from "types/endpoints";
-import request from "supertest";
 import { app } from "@src/app";
+import request from "supertest";
+import { ENDPOINTS } from "types/endpoints";
+import { FOLDERS, SECTIONS } from "types/fileFolders";
 import { prepareTestUserMock } from "./__mocks__/testUser";
-import { cleanUpAfterTests, cleanUpBeforeTests, createTestTags } from "./setup";
-import { FOLDERS } from "types/fileFolders";
+import { cleanUp, createTestEmployee } from "./setup";
+import { createTestTags } from "@services/utils/testSetupFunctions";
 
 let departmentId: number;
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
-	const tags = await createTestTags();
+	const tags = await createTestTags(1, SECTIONS.employee);
 	departmentId = tags[0].id;
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`CREATE ${ENDPOINTS.employees.base}`, () => {

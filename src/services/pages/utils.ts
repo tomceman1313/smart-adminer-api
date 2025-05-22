@@ -26,34 +26,34 @@ export function validateCreatePageData(data: CreatePageRequestBody) {
 
 export function validateUpdatePageData(
 	updatedData: UpdatePageRequestBody,
-	currentDate: Page | null
+	currentData: Page | null
 ) {
-	if (!currentDate) throw new AppError("Page was not found", 404);
+	if (!currentData) throw new AppError("Page was not found", 404);
 
 	if (
 		updatedData.hasTitle === false &&
-		currentDate.hasTitle &&
+		currentData.hasTitle &&
 		updatedData.title
 	)
 		throw new AppError("Title is disabled for this page.", 400);
 
 	if (
 		updatedData.hasDescription === false &&
-		currentDate.hasDescription &&
+		currentData.hasDescription &&
 		updatedData.description
 	)
 		throw new AppError("Description is disabled for this page.", 400);
 
 	if (
 		updatedData.hasImage === false &&
-		currentDate.hasImage &&
+		currentData.hasImage &&
 		updatedData.image
 	)
 		throw new AppError("Description is disabled for this page.", 400);
 
 	if (
 		updatedData.hasRichEditor === false &&
-		currentDate.hasRichEditor &&
+		currentData.hasRichEditor &&
 		updatedData.body
 	) {
 		const htmlTagRegex = /<[^>]+>/;

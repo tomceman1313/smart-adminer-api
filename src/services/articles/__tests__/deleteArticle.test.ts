@@ -1,24 +1,18 @@
 import { Article, ArticleAttachedFile } from "@prisma/client";
-import {
-	cleanUpAfterTests,
-	cleanUpBeforeTests,
-	createTestArticle,
-	createTestTags,
-	createTestUser,
-} from "./setup";
+import { cleanUp, createTestArticle, createTestUser } from "./setup";
 import { ENDPOINTS } from "types/endpoints";
 import request from "supertest";
 import { app } from "@src/app";
 import prisma from "@config/database";
+import { createTestTags } from "@services/utils/testSetupFunctions";
+import { SECTIONS } from "types/fileFolders";
 
 let tagId = 0;
 let userId = 0;
 let article: Article & { attachedFiles: ArticleAttachedFile[] };
 
 beforeAll(async () => {
-	await cleanUpBeforeTests();
-
-	const tags = await createTestTags();
+	const tags = await createTestTags(2, SECTIONS.article);
 	tagId = tags[0].id;
 
 	const user = await createTestUser();
@@ -29,7 +23,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-	await cleanUpAfterTests();
+	await cleanUp();
 });
 
 describe(`DELETE ${ENDPOINTS.articles.byId}`, () => {

@@ -34,7 +34,6 @@ export async function createPage(
 // update page
 export async function updatePage(req: Request, res: Response): Promise<void> {
 	await validateRequestBody(updatePageSchema, req.body);
-
 	const page = await pagesService.updatePage(
 		parseIdFromUrlParams(req.params.id),
 		req.body
