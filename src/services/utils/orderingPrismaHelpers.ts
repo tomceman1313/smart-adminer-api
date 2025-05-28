@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import prisma from "../../config/database";
 import { AppError } from "../../middlewares/error.middleware";
 import { PrismaModel, PrismaTable } from "../../types/types";
@@ -190,7 +194,7 @@ export async function changeOrder({
 
 		await RenormalizePositions(model, tableName, tagId);
 
-		return await model.findUnique({ where: { id: recordId } });
+		return model.findUnique({ where: { id: recordId } });
 	}
 
 	return await model.update({

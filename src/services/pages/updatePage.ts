@@ -1,6 +1,6 @@
 import { createFile } from "@services/files/createFile";
 import { updateConnectedFiles } from "@services/utils/prismaHelpers/connectedFiles/updateConnectedFiles";
-import { FOLDERS } from "types/fileFolders";
+import { FOLDERS, SECTIONS } from "types/fileFolders";
 import { UpdatePageRequestBody } from "types/pages";
 import prisma from "../../config/database";
 import { validateUpdatePageData } from "./utils";
@@ -21,7 +21,13 @@ export async function updatePage(id: number, data: UpdatePageRequestBody) {
 	let imageId: number | undefined | null =
 		data.image === null ? null : undefined;
 
-	await updateConnectedFiles(data.images, prisma.pageImage, id);
+	await updateConnectedFiles(
+		SECTIONS.page,
+		data.images,
+		prisma.pageImage,
+		"pageId",
+		id
+	);
 
 	if (data.image) {
 		const isAlreadyCreated = data.image.id;

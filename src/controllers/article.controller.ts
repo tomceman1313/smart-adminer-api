@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
 	createArticleSchema,
 	updateArticleSchema,
@@ -6,7 +8,11 @@ import { validateRequestBody } from "@services/utils";
 import { parseRequestQuery } from "@utils/formatting";
 import { parseIdFromUrlParams } from "@utils/helpers";
 import { Request, Response } from "express";
-import { ArticleQuery, CreateArticleRequestBody } from "types/articles";
+import {
+	ArticleQuery,
+	CreateArticleRequestBody,
+	UpdateArticleRequestBody,
+} from "types/articles";
 import { ExtendedRequest, PRISMA_TABLES } from "types/types";
 import articlesService from "../services/articles/articles.service";
 import { changeOrderSchema } from "@schema/common";
@@ -39,7 +45,7 @@ export async function createArticle(
 
 // update article
 export async function updateArticle(
-	req: Request,
+	req: ExtendedRequest<{ id?: string }, {}, {}, UpdateArticleRequestBody>,
 	res: Response
 ): Promise<void> {
 	await validateRequestBody(updateArticleSchema, req.body);

@@ -1,55 +1,101 @@
 import { createFile } from "@services/files/createFile";
 import { deleteFile } from "@services/files/deleteFile";
-import { FOLDERS } from "types/fileFolders";
-import { PageImage } from "types/pages";
+import { updateFile } from "@services/files/updateFile";
+import { CreateFileBodyRequest, UpdateFileRequestBody } from "types/files";
 import { PrismaModel } from "types/types";
 
+interface UpdatedConnectedFile extends UpdateFileRequestBody {
+	id?: number;
+	fileId?: number;
+	isDeleted?: boolean;
+	position?: number;
+}
+
 export async function updateConnectedFiles(
-	data?: PageImage[],
+	context: string,
+	data?: UpdatedConnectedFile[],
 	model?: PrismaModel, // automatically connect newly created files
+	parentEntityKey?: string,
 	parentEntityId?: number
 ) {
 	if (!data) return undefined;
 
-	const sortedImages = data.reduce(
+	const categorizedFiles = data.reduce(
 		(result, file) => {
 			if (file.isDeleted)
 				return { ...result, deleted: [...result.deleted, file] };
 
+			if (file.id) return { ...result, updated: [...result.updated, file] };
+
 			return { ...result, created: [...result.created, file] };
 		},
-		{ created: [] as PageImage[], deleted: [] as PageImage[] }
+		{
+			created: [] as UpdatedConnectedFile[],
+			updated: [] as UpdatedConnectedFile[],
+			deleted: [] as UpdatedConnectedFile[],
+		}
 	);
 
-	const deletedIds = await Promise.all(
-		sortedImages.deleted.map(async (image) => {
-			if (image.context !== FOLDERS.page && image.id) return image.id;
+	const deletedIds = await deleteFiles(categorizedFiles.deleted, context);
 
-			await deleteFile(image.id, undefined, FOLDERS.page, true);
+	const createdFiles = await createFiles(categorizedFiles.created);
 
-			return image.id!;
-		})
-	);
+	const updatedFiles = await updateFiles(categorizedFiles.updated);
 
-	const createdIds = await Promise.all(
-		sortedImages.created.map(async (image) => {
-			const newImage = image.id
-				? image
-				: await createFile({
-						...image,
-						context: FOLDERS.page,
-					});
+	if (!model || !parentEntityKey)
+		return { deletedIds, createdFiles, updatedFiles };
 
-			return newImage.id!;
-		})
-	);
-
-	if (!model) return { deletedIds, createdIds };
-
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 	await model.createMany({
-		data: createdIds.map((id) => ({
-			fileId: id,
-			pageId: parentEntityId,
+		data: createdFiles.map((file) => ({
+			fileId: file.id,
+			[parentEntityKey]: parentEntityId,
+			position: file.position,
 		})),
 	});
+}
+
+async function deleteFiles(files: UpdatedConnectedFile[], context: string) {
+	return Promise.all(
+		files.map(async (file) => {
+			if (file.context !== context && file.fileId) return file.fileId;
+
+			await deleteFile(file.fileId, undefined, context, true);
+
+			return file.fileId!;
+		})
+	);
+}
+
+async function createFiles(files: UpdatedConnectedFile[]) {
+	return Promise.all(
+		files.map(async (file) => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const { fileId, ...dataWithoutFileId } = file;
+
+			const newFile = file.id
+				? file
+				: await createFile({
+						...(dataWithoutFileId as CreateFileBodyRequest),
+					});
+
+			// if files are not ordered
+			if (!file.position) return { ...newFile };
+
+			return { ...newFile, position: file.position };
+		})
+	);
+}
+
+async function updateFiles(files: UpdatedConnectedFile[]) {
+	return Promise.all(
+		files.map(async (file) => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const { fileId, ...dataWithoutFileId } = file;
+
+			return updateFile(file.id!, {
+				...dataWithoutFileId,
+			});
+		})
+	);
 }

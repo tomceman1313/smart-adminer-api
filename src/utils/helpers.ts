@@ -18,9 +18,11 @@ export function parseIdFromUrlParams(id?: string) {
 }
 
 export function generateUniqueId() {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const crypto = require("crypto");
 
-	return crypto.randomBytes(16).toString("hex");
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+	return crypto.randomBytes(16).toString("hex") as string;
 }
 
 export function findRemovedIds(
@@ -29,4 +31,29 @@ export function findRemovedIds(
 ): number[] {
 	const newIds = new Set(newState.map((id) => id));
 	return previousState.filter((id) => !newIds.has(id));
+}
+
+export function checkPositionSequence<T>(
+	items: Array<T & { position?: number }>,
+	propertyNamePlural: string
+) {
+	const itemsWithNonValidPosition = items.find((item) => !item.position);
+
+	if (itemsWithNonValidPosition)
+		throw new AppError(
+			`Not all ${propertyNamePlural} have assigned valid position`,
+			400
+		);
+
+	const sortedFiles = items.sort((a, b) => a.position! - b.position!);
+	for (let i = 0; i < sortedFiles.length; i++) {
+		if (sortedFiles[i].position !== i + 1) {
+			throw new AppError(
+				`${propertyNamePlural} positions are not starting sequentially from 1`,
+				400
+			);
+		}
+	}
+
+	return true;
 }

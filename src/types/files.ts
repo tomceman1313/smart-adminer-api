@@ -14,8 +14,11 @@ export interface CreateFileBodyRequest {
 }
 
 export interface UpdateFileRequestBody
-	extends Omit<Prisma.FileCreateInput, "tags"> {
+	extends Omit<Prisma.FileUpdateInput, "tags" | "image"> {
 	base64?: string;
+	name?: string;
+	image?: string | null;
+	context?: string;
 	tags?: number[];
 }
 

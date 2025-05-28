@@ -3,8 +3,9 @@ const SERVICES_BASE = {
 	articles: "/articles",
 	employees: "/employees",
 	files: "/files",
-	priceList: "/priceList",
 	pages: "/pages",
+	priceList: "/priceList",
+	products: "/products",
 	notifications: "/notifications",
 	tags: "/tags",
 	users: "/users",
@@ -40,6 +41,15 @@ export const ENDPOINTS = {
 		base: `${SERVICES_BASE.priceList}`,
 		byId: `${SERVICES_BASE.priceList}/:id`,
 		order: `${SERVICES_BASE.priceList}/:id/order`,
+	},
+	products: {
+		base: `${SERVICES_BASE.products}`,
+		byId: `${SERVICES_BASE.products}/:id`,
+		order: `${SERVICES_BASE.products}/:id/order`,
+		manufacturers: {
+			base: `${SERVICES_BASE.products}/manufacturers`,
+			byId: `${SERVICES_BASE.products}/manufacturers/:id`,
+		},
 	},
 	notifications: {
 		base: `${SERVICES_BASE.notifications}`,

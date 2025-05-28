@@ -20,7 +20,7 @@ export interface PaginationQuery {
 	// totalElements?: number;
 }
 
-export type PrismaTable = keyof typeof PRISMA_TABLES;
+export type PrismaTable = (typeof PRISMA_TABLES)[keyof typeof PRISMA_TABLES];
 
 export const PRISMA_TABLES = {
 	article: "Article",
@@ -31,9 +31,11 @@ export const PRISMA_TABLES = {
 	employeeTag: "EmployeeTag",
 	priceListItem: "PriceListItem",
 	priceListItemTag: "PriceListItemTag",
+	product: "Product",
+	productTag: "ProductTag",
 	vacancy: "Vacancy",
 	vacancyTag: "VacancyTag",
-};
+} as const;
 
 export type PrismaModel = {
 	findMany: Function;
@@ -45,3 +47,10 @@ export type PrismaModel = {
 	aggregate: Function;
 	findUnique: Function;
 };
+
+export interface UpdateOrderRequest {
+	recordId: number;
+	recordBeforeId?: number;
+	recordAfterId?: number;
+	tagId?: number;
+}

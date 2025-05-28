@@ -6,7 +6,6 @@ import { UpdateFileRequestBody } from "../../types/files";
 import { generateUniqueId } from "../../utils/helpers";
 import { deleteFile, uploadFile } from "../utils/fileModifications";
 
-// updates vacancy data
 // add and remove tags based on provided array
 // creates file if new image is provided
 // removes image if it is in vacancy context
@@ -24,7 +23,7 @@ export async function updateFile(id: number, data: UpdateFileRequestBody) {
 
 	// create new file preview image
 	let previewImage = undefined;
-	if (data.image) {
+	if (data.image && data.context) {
 		previewImage = await createPreviewImage(
 			data.image,
 			data.context,
@@ -43,16 +42,15 @@ export async function updateFile(id: number, data: UpdateFileRequestBody) {
 	// upload new file
 	let fileName = undefined;
 	if (data.base64) {
-		fileName = await uploadUpdatedFile(
-			data.base64,
-			data.name,
-			data.context,
-			file.name,
-			file.context
-		);
+		fileName = await uploadUpdatedFile({
+			imageBase64: data.base64,
+			fileName: data.name,
+			context: data.context,
+			previousFilePath: `/${file.context}/${file.name}`,
+		});
 	}
 
-	const updatedVacancy = await prisma.file.update({
+	return prisma.file.update({
 		data: {
 			image: previewImage,
 			extension: data.extension,
@@ -68,8 +66,6 @@ export async function updateFile(id: number, data: UpdateFileRequestBody) {
 			tags: true,
 		},
 	});
-
-	return updatedVacancy;
 }
 
 async function createPreviewImage(
@@ -90,18 +86,22 @@ async function createPreviewImage(
 	});
 }
 
-async function uploadUpdatedFile(
-	imageBase64: string,
-	fileName: string,
-	context: string,
-	previousFileName: string,
-	previousFileContext: string
-) {
-	await deleteFile(`/${previousFileContext}/${previousFileName}`);
+async function uploadUpdatedFile({
+	context,
+	imageBase64,
+	previousFilePath,
+	fileName,
+}: {
+	imageBase64: string;
+	context?: string;
+	previousFilePath: string;
+	fileName?: string;
+}) {
+	await deleteFile(previousFilePath);
 
 	return await uploadFile({
 		base64: imageBase64,
-		fileName: fileName,
-		outputFilePath: `/${context}`,
+		fileName: fileName ?? generateUniqueId(),
+		outputFilePath: `/${context ?? FOLDERS.fileStorage}`,
 	});
 }

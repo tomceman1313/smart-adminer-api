@@ -7,19 +7,14 @@ import prisma from "@config/database";
 import { createTestTags } from "@services/utils/testSetupFunctions";
 import { SECTIONS } from "types/fileFolders";
 
-let tagId = 0;
-let userId = 0;
 let article: Article & { attachedFiles: ArticleAttachedFile[] };
 
 beforeAll(async () => {
 	const tags = await createTestTags(2, SECTIONS.article);
-	tagId = tags[0].id;
 
 	const user = await createTestUser();
-	userId = user.id;
 
-	const newArticle = await createTestArticle([tagId], userId);
-	article = newArticle;
+	article = await createTestArticle([tags[0].id], user.id);
 });
 
 afterAll(async () => {

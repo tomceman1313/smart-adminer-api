@@ -4,6 +4,7 @@ export const FOLDERS = {
 	fileStorage: "uploads",
 	employee: "employee",
 	page: "page",
+	product: "product",
 	priceList: "priceListItem",
 	priceListItemTag: "priceListItemTag",
 	vacancy: "vacancy",

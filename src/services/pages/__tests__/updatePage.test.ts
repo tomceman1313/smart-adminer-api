@@ -47,7 +47,7 @@ describe(`PATCH ${ENDPOINTS.pages.byId}`, () => {
 				},
 				images: [
 					{
-						id: imageId,
+						fileId: imageId,
 						isDeleted: true,
 						extension: "png",
 						type: "image",
@@ -102,7 +102,7 @@ describe(`PATCH ${ENDPOINTS.pages.byId}`, () => {
 				body: null,
 				images: [
 					{
-						id: imageId,
+						fileId: imageId,
 						isDeleted: true,
 						extension: "png",
 						type: "image",
